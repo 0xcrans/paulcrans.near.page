@@ -1,5 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::collections::LookupMap;
+use near_sdk::collections::LookupMap;  
 use near_sdk::{env, near_bindgen, AccountId, BorshStorageKey, PanicOnDefault};
 
 mod web4;
@@ -11,7 +11,7 @@ enum StorageKey {
 }
 
 #[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
+#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)] 
 pub struct Contract {
     owner_id: AccountId,
     base_url: String,
@@ -21,7 +21,8 @@ pub struct Contract {
 #[near_bindgen]
 impl Contract {
     #[init]
-    pub fn new(owner_id: AccountId, base_url: String) -> Self {
+    pub fn new(owner_id: AccountId) -> Self {
+        let base_url = "https://bafybeigw4ywe37byxm7ha5lifsonctadgi3gunuxghxfjc33bzukalzlba.ipfs.w3s.link".to_string();
         let mut this = Self {
             owner_id,
             base_url,
@@ -46,7 +47,7 @@ impl Contract {
         if path == "robots.txt" {
             return Web4Response::plain_response("User-agent: *\nDisallow:".to_string());
         }
-
+        
         if let Some(file_name) = self.pages.get(&path.to_string()) {
             let full_url = format!("{}/{}", self.base_url, file_name);
             Web4Response::redirect(full_url)

@@ -1,5 +1,5 @@
 use near_sdk::json_types::Base64VecU8;
-use near_sdk::{serde::{Deserialize, Serialize}};
+use near_sdk::serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
@@ -7,7 +7,7 @@ use std::collections::HashMap;
 pub struct Web4Request {
     pub path: String,
     pub params: Option<HashMap<String, String>>,
-    pub query: Option<HashMap<String, Vec<String>>>,
+    pub query: Option<HashMap<String, Vec<String>>>,  
 }
 
 #[derive(Serialize, Deserialize)]
