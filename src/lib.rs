@@ -1,7 +1,6 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::LookupMap;  
 use near_sdk::{env, near_bindgen, AccountId, BorshStorageKey, PanicOnDefault};
-
 mod web4;
 use web4::{Web4Request, Web4Response};
 
@@ -21,8 +20,7 @@ pub struct Contract {
 #[near_bindgen]
 impl Contract {
     #[init]
-    pub fn new(owner_id: AccountId) -> Self {
-        let base_url = "https://bafybeigw4ywe37byxm7ha5lifsonctadgi3gunuxghxfjc33bzukalzlba.ipfs.w3s.link".to_string();
+    pub fn new(owner_id: AccountId, base_url: String) -> Self {
         let mut this = Self {
             owner_id,
             base_url,
@@ -40,6 +38,16 @@ impl Contract {
     pub fn get_page_url(&self, path: String) -> Option<String> {
         self.pages.get(&path).map(|file_name| format!("{}/{}", self.base_url, file_name))
     }
+
+    pub fn set_base_url(&mut self, new_base_url: String) {
+        assert_eq!(env::predecessor_account_id(), self.owner_id, "Only the owner can change the base URL");
+        self.base_url = new_base_url;
+    }
+
+    pub fn get_base_url(&self) -> String {
+        self.base_url.clone()
+    }
+
 
     pub fn web4_get(&self, request: Web4Request) -> Web4Response {
         let path = request.path.trim_start_matches('/');
